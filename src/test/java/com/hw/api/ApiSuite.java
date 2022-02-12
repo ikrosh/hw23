@@ -1,5 +1,6 @@
 package com.hw.api;
 
+import com.hw.api.data.Credentials;
 import com.hw.api.model.UserDataInfo;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.Test;
@@ -11,11 +12,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ApiSuite extends BaseTest {
 
+//    To run tests please add valid token to com.hw.api.data.Credentials.TOKEN
+
     @Test
     public void getUsersTest() {
         Map<String, Object> mapUsers = usersRequests
-                .getUsersRequest("5f6f356d11a529da54c3c84ef937c1e5997cdb7f3f74faed56623dc0dd541f42",
-                        "/users");
+                .getUsersRequest(Credentials.TOKEN.getToken(), "/users");
         Response response = (Response) mapUsers.get("response");
         assertThat(response.contentType()).as("").isEqualTo("application/json; charset=utf-8");
     }
@@ -30,8 +32,7 @@ public class ApiSuite extends BaseTest {
         + "                \"status\": \"inactive\""
         + "        }";
         Map<String, Object> mapUsers = usersRequests
-                .createUserRequest("5f6f356d11a529da54c3c84ef937c1e5997cdb7f3f74faed56623dc0dd541f42",
-                        "/users", 201, user);
+                .createUserRequest(Credentials.TOKEN.getToken(), "/users", 201, user);
         Response response = (Response) mapUsers.get("response");
         assertThat(response.contentType()).as("").isEqualTo("application/json; charset=utf-8");
         UserDataInfo userDataInfo = gson.fromJson(response.asString(), UserDataInfo.class);
